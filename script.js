@@ -1,17 +1,21 @@
+
 const gameUIElements = () => {
   return {
+    header: {
+      tagname: 'header',
+      content: `<h1>Guess The Number</h1>`
+    },
     main: {
       tagname: 'main',
+      attributes: { id: 'game-card' },
       children: [
         {
           tagname: 'section',
-          attributes: { id: 'game-title'},
-          content: `<h1>Guess The Number</h1>`
-        },
-        {
-          tagname: 'section',
-          attributes: { id: 'start-button' },
-          content: `<button id="start" onclick="">Start Game</button>`
+          attributes: { 
+            id: 'start-button',
+            onclick: handleStart()
+          },
+          textContent: 'Start Game'
         },
         {
           tagname: 'section',
@@ -23,21 +27,24 @@ const gameUIElements = () => {
         {
           tagname: 'section',
           attributes: { id: 'intro-message' },
-          content: `<h2>You have ${chancesNum} chances to find a number between 1 and ${max}.</h2>
+          content: `<h2>You have ${chances} chances to find a number between 1 and ${maximum}.</h2>
                     <button id="continue" onclick="">Continue</button>`
         }, 
         {
           tagname: 'section',
           attributes: { id: 'game-grid' },
           content: `<div id="minimum" class="large">
+                      <p>${minimum}</p>
                     </div>
                     <div id="chances" class="large">
+                      <p>${chances}</p>
                     </div>
                     <div id="guess" class="large">
-                    </div>
-                    <div id="target" class="large">
+                      <input type="number" id="number-input" oninput="displayNumber()" autofocus required>
+                      <p id="display"></p>
                     </div>
                     <div id="maximum" class="large">
+                      <p>${maximum}</p>
                     </div>
                     <div id="turn-1" class="small">
                     </div>
@@ -70,14 +77,6 @@ const gameUIElements = () => {
                     <div id="turn-15" class="small">
                     </div>
                     <div id="turn-16" class="small">
-                    </div>
-                    <div id="turn-17" class="small">
-                    </div>
-                    <div id="turn-18" class="small">
-                    </div>
-                    <div id="turn-19" class="small">
-                    </div>
-                    <div id="turn-20" class="small">
                     </div>`
         },
         {
@@ -118,4 +117,17 @@ const gameUIElements = () => {
       ]
     }
   }
+}
+
+const renderStart = () => {
+
+}
+
+const handleStart = () => {
+
+}
+
+const displayNumber = () => {
+  let input = document.getElementById('number-input').value;
+  document.getElementById('display').innerText = input;
 }
