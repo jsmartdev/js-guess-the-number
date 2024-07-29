@@ -1,3 +1,9 @@
+const clearChildren = (parent) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+};
+
 const startScreen = () => {
   
   const titleContainer = document.createElement('header');
