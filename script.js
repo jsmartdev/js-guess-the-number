@@ -42,6 +42,7 @@ const handleModes = () => {
 }
 
 const displayNumber = () => {
-  let input = document.getElementById('number-input').value;
-  document.getElementById('display').innerText = input;
+  let hiddenInput = document.getElementById('number-input');
+  let guessField = document.getElementById('guess-container');
+  guessField.textContent = hiddenInput.value;
 }
