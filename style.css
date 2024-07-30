@@ -1,3 +1,12 @@
+:root {
+  --powder-blue: #93b5c6ff;
+  --tea-green: #ddedaaff;
+  --naples-yellow: #f0cf65ff;
+  --burnt-sienna: #d7816aff;
+  --fuchsia-rose: #bd4f6cff;
+}
+
+
 * {
   margin: none;
   padding: none;
@@ -35,6 +44,7 @@ body {
 
 #button-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   border: solid black 2px;
@@ -58,4 +68,5 @@ body {
   color: white;
   background-color: blue;
   border-radius: 14px;
+  margin: 1.5em;
 }
