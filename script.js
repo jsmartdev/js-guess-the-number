@@ -1,5 +1,5 @@
 
-const createElement = (tagName, id = '', text = '', classNames = []) => {
+const makeElement = (tagName, id = '', text = '', classNames = []) => {
   const element = document.createElement(tagName);
   if (id) {
     element.id = id;
@@ -33,34 +33,19 @@ const clearChildren = (parent) => {
 };
 
 const startScreen = () => {
-  
-  const titleContainer = document.createElement('header');
-  const buttonContainer  = document.createElement('section');
-  const gameTitle = document.createElement('h1');
-  const easyButton = document.createElement('button');
-  const normalButton = document.createElement('button');
-  const hardButton = document.createElement('button');
-  
-  titleContainer.id = 'title-container';
-  buttonContainer.id = 'button-container';
-  easyButton.id = 'easy-mode';
-  normalButton.id = 'normal-mode';
-  hardButton.id = 'hard-mode';
-  gameTitle.textContent = 'Guess The Secret Number';
-  easyButton.textContent = 'Easy';
-  normalButton.textContent = 'Normal';
-  hardButton.textContent = 'Hard';
+  const titleContainer = makeElement('header', 'title-container');
+  const buttonContainer  = makeElement('section', 'button-container');
+  const gameTitle = makeElement('h1', '', 'Guess The Secret Number');
+  const easyButton = makeElement('button', 'easy-mode', 'Easy', 'button-class');
+  const normalButton = makeElement('button', 'normal-mode', 'Normal', 'button-class');
+  const hardButton = makeElement('button', 'hard-mode', 'Hard', 'button-class');
   
   buttonContainer.appendChild(easyButton);
   buttonContainer.appendChild(normalButton);
   buttonContainer.appendChild(hardButton);
   titleContainer.appendChild(gameTitle);
   
-  const buttons = buttonContainer.querySelectorAll('button');
-  buttons.forEach(button => button.classList.add('button'));
-  
   return [titleContainer, buttonContainer];
-
 }
 
 startScreen().forEach(el => document.body.appendChild(el));
