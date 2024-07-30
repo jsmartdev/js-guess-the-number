@@ -1,27 +1,26 @@
 
-const createElementId = (tagName, id) => {
+const createElement = (tagName, id = '', text = '', classNames = []) => {
   const element = document.createElement(tagName);
-  element.id = id;
-  return element;
-};
-
-const createTextElement = (tagName, id, text) => {
-  const element = document.createElement(tagName);
-  element.id = id;
-  element.textContent = text;
-  return element;
-};
-
-const createButton = (id, text) => {
-  const button = createElementId('button', id);
-  button.textContent = text;
-  button.classList.add('button');
-  return button;
-};
-
-const addClasses = (element, ...classNames) => {
-  if (element instanceof Element) {
+  if (id) {
+    element.id = id;
+  }
+  if (text) {
+    element.textContent = text;
+  }
+  if (classNames.length > 0) {
     element.classList.add(...classNames);
+  }
+  return element;
+};
+
+const modifyClasses = (element, classesToAdd = [], classesToRemove = []) => {
+  if (element instanceof Element) {
+    if (classesToRemove.length > 0) {
+      element.classList.remove(...classesToRemove);
+    }
+    if (classesToAdd.length > 0) {
+      element.classList.add(...classesToAdd);
+    }
   } else {
     console.error('Provided argument is not a valid DOM element.');
   }
