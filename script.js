@@ -33,11 +33,7 @@ const clearChildren = (parent) => {
   }
 };
 
-const displayNumber = () => {
-  let hiddenInput = document.getElementById('number-input');
-  let guessField = document.getElementById('guess-container');
-  guessField.textContent = hiddenInput.value;
-}
+
 
 const startScreen = () => {
   const titleContainer = makeElement('header', 'title-container');
@@ -67,6 +63,12 @@ const handleStartButton = () => {
 
 const renderStartScreen = () => {
   startScreen().forEach(el => gameField.appendChild(el));
+}
+
+const displayNumber = () => {
+  let hiddenInput = document.getElementById('number-input');
+  let guessField = document.getElementById('guess-container');
+  guessField.textContent = hiddenInput.value;
 }
 
 renderStartScreen();
