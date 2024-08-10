@@ -25,10 +25,9 @@ body {
 }
 
 #game-field {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(9, 1fr);
   height: 100%;
   width: 100%;
   background-color: bisque;
@@ -73,5 +72,7 @@ h1 {
 }
 
 #hidden-input {
-  display: none;
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
 }

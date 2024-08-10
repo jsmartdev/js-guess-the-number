@@ -53,8 +53,8 @@ const gameScreen = () => {
   const messageField = makeElement('section', 'message-field');
   const guessField = makeElement('section', 'guess-field');
   const turnsField = makeElement('section', 'turns-field');
-  const minField = makeElement('section', 'min-field', '001');
-  const maxField = makeElement('section', 'max-field', '500');
+  const minField = makeElement('section', 'min-field');
+  const maxField = makeElement('section', 'max-field');
   const message = makeElement('h4', 'message', 'Type in a number between min and max, then press enter');
   const guessLabel = makeElement('h2', 'guess-label', 'Guess');
   const guessValue = makeElement('h3', 'guess-value');
@@ -64,6 +64,8 @@ const gameScreen = () => {
   const minValue = makeElement('h3', 'min-value', '001');
   const maxLabel = makeElement('h2', 'max-label', 'Max');
   const maxValue = makeElement('h3', 'max-value', '500');
+  const numberInput = makeElement('input', 'hidden-input');
+  numberInput.type = 'number';
   
   messageField.appendChild(message);
   guessField.appendChild(guessLabel);
@@ -74,8 +76,8 @@ const gameScreen = () => {
   minField.appendChild(minValue);
   maxField.appendChild(maxLabel);
   maxField.appendChild(maxValue);
-
-  return [messageField, guessField, turnsField, minField, maxField];
+  
+  return [messageField, guessField, turnsField, minField, maxField, numberInput];
 }
 
 
@@ -92,22 +94,36 @@ const handleStartButton = () => {
   clearChildren(buttonContainer);
 
   const easyButton = makeElement('button', 'easy-mode', 'Easy', ['button'] );
-  easyButton.addEventListener('click', () => handleModeButton('easy-mode', 16));
+  easyButton.addEventListener('click', () => handleModeButton(16));
   const normalButton = makeElement('button', 'normal-mode', 'Normal', ['button'] );
-  normalButton.addEventListener('click', () => handleModeButton('normal-mode', 12));
+  normalButton.addEventListener('click', () => handleModeButton(12));
   const hardButton = makeElement('button', 'hard-mode', 'Hard', ['button'] );
-  hardButton.addEventListener('click', () => handleModeButton('hard-mode', 8));
+  hardButton.addEventListener('click', () => handleModeButton(8));
   
   buttonContainer.appendChild(easyButton);
   buttonContainer.appendChild(normalButton);
   buttonContainer.appendChild(hardButton);
 }
 
-handleModeButton = (id, chanceNum) => {
-  const modeButton = document.getElementById(id);
+handleModeButton = (chanceNum) => {
   chances += chanceNum;
   clearChildren(gameField);
   renderGameScreen();
+  
+  const numberInput = document.getElementById('hidden-input');
+  const guessValue = document.getElementById('guess-value')
+  numberInput.addEventListener('input', (event) => {
+    guessValue.textContent = event.target.value;
+    console.log(event.target.value)
+  });
+  
+  numberInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      guessValue.textContent = '';
+      numberInput.value = '';
+    }
+  });
+  numberInput.focus();
 }
 
 renderStartScreen();
