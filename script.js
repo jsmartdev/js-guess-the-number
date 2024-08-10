@@ -53,7 +53,7 @@ const gameScreen = () => {
   const messageField = makeElement('section', 'message-field');
   const guessField = makeElement('section', 'guess-field');
   const turnsField = makeElement('section', 'turns-field');
-  const minField = makeElement('section', 'min-field');
+  const minField = makeElement('section', 'min-field',);
   const maxField = makeElement('section', 'max-field');
   const message = makeElement('h4', 'message', 'Type in a number between min and max, then press enter');
   const guessLabel = makeElement('h2', 'guess-label', 'Guess');
