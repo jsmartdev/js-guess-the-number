@@ -65,7 +65,6 @@ const gameScreen = () => {
   const maxLabel = makeElement('h2', 'max-label', 'Max');
   const maxValue = makeElement('h3', 'max-value', '500');
   
-
   messageField.appendChild(message);
   guessField.appendChild(guessLabel);
   guessField.appendChild(guessValue);
@@ -76,7 +75,7 @@ const gameScreen = () => {
   maxField.appendChild(maxLabel);
   maxField.appendChild(maxValue);
 
-  return [messageField, guessField, turnsField, minField, maxField, hiddenInput];
+  return [messageField, guessField, turnsField, minField, maxField];
 }
 
 
