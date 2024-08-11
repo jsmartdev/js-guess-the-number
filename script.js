@@ -126,11 +126,10 @@ handleModeButton = (chanceNum) => {
   });
   
   numberInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter') 
       guessValue.textContent = '';
       numberInput.value = '';
-    }
-  });
+    })
   numberInput.focus();
 
   numberInput.addEventListener('focusout', () => {
