@@ -22,31 +22,52 @@ body {
   width: 100vw;
   margin: 0;
   font-size: 62.5%;
+  padding: 0.5rem;
 }
 
 #game-field {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(9, 1fr);
+  gap: 0.5rem;
   height: 100%;
   width: 100%;
-  background-color: bisque;
 }
 
 #title-container {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 3;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 15%;
-  width: 100%;
 }
 
 h1 {
+  font-size: 1.75rem;
   text-align: center;
-  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1rem;
+  margin: 0.25rem;
+}
+
+h3 {
+  margin: 0.25rem;
+  font-size: 3rem;
+}
+
+h4 {
+  font-size: 1rem;
 }
 
 #button-container {
+  grid-column-start: 1;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 9;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -66,7 +87,7 @@ h1 {
   padding: 0.5rem;
   border: none;
   color: white;
-  background-color: blue;
+  background-color: grey;
   border-radius: 14px;
   margin: 1.5rem;
 }
@@ -84,30 +105,40 @@ h1 {
   grid-row-end: 2;
 }
 
-#guess-field {
+#guess-card {
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 4;
 }
 
-#turns-field {
+#turns-card {
   grid-column-start: 3;
   grid-column-end: 5;
   grid-row-start: 2;
   grid-row-end: 4;
 }
 
-#min-field {
+#min-card {
   grid-column-start: 1;
   grid-column-end: 3;
   grid-row-start: 4;
   grid-row-end: 6;
 }
 
-#max-field {
+#max-card {
   grid-column-start: 3;
   grid-column-end: 5;
   grid-row-start: 4;
   grid-row-end: 6;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  background-color: gray;
 }

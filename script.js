@@ -51,15 +51,15 @@ const startScreen = () => {
 
 const gameScreen = () => {
   const messageField = makeElement('section', 'message-field');
-  const guessField = makeElement('section', 'guess-field');
-  const turnsField = makeElement('section', 'turns-field');
-  const minField = makeElement('section', 'min-field',);
-  const maxField = makeElement('section', 'max-field');
+  const guessField = makeElement('section', 'guess-card', '', ['card']);
+  const turnsField = makeElement('section', 'turns-card', '', ['card']);
+  const minField = makeElement('section', 'min-card', '', ['card']);
+  const maxField = makeElement('section', 'max-card', '', ['card']);
   const message = makeElement('h4', 'message', 'Type in a number between min and max, then press enter');
   const guessLabel = makeElement('h2', 'guess-label', 'Guess');
   const guessValue = makeElement('h3', 'guess-value');
   const turnsLabel = makeElement('h2', 'turns-label', 'Turns');
-  const turnsValue = makeElement('h3', 'turns-value', `${chances}`);
+  const turnsValue = makeElement('h3', 'turns-value');
   const minLabel = makeElement('h2', 'min-label', 'Min');
   const minValue = makeElement('h3', 'min-value', '001');
   const maxLabel = makeElement('h2', 'max-label', 'Max');
@@ -110,8 +110,16 @@ handleModeButton = (chanceNum) => {
   clearChildren(gameField);
   renderGameScreen();
   
+  const turnsValue = document.getElementById('turns-value');
   const numberInput = document.getElementById('hidden-input');
-  const guessValue = document.getElementById('guess-value')
+  const guessValue = document.getElementById('guess-value');
+
+  if(chances < 10) {
+    turnsValue.textContent = `00${chances}`;
+  } else {
+    turnsValue.textContent = `0${chances}`;
+  }
+
   numberInput.addEventListener('input', (event) => {
     guessValue.textContent = event.target.value;
     console.log(event.target.value)
@@ -124,6 +132,10 @@ handleModeButton = (chanceNum) => {
     }
   });
   numberInput.focus();
+
+  numberInput.addEventListener('focusout', () => {
+    numberInput.focus(); 
+  });
 }
 
 renderStartScreen();
