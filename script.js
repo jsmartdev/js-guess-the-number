@@ -94,10 +94,11 @@ const handleStartButton = () => {
   clearChildren(buttonContainer);
 
   const easyButton = makeElement('button', 'easy-mode', 'Easy', ['button'] );
-  easyButton.addEventListener('click', () => handleModeButton(16));
   const normalButton = makeElement('button', 'normal-mode', 'Normal', ['button'] );
-  normalButton.addEventListener('click', () => handleModeButton(12));
   const hardButton = makeElement('button', 'hard-mode', 'Hard', ['button'] );
+  
+  easyButton.addEventListener('click', () => handleModeButton(16));
+  normalButton.addEventListener('click', () => handleModeButton(12));
   hardButton.addEventListener('click', () => handleModeButton(8));
   
   buttonContainer.appendChild(easyButton);
