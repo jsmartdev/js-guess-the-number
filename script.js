@@ -121,8 +121,8 @@ handleModeButton = (chanceNum) => {
   }
 
   numberInput.addEventListener('input', (event) => {
-    guessValue.textContent = event.target.value;
-    console.log(event.target.value)
+    guessValue.textContent += event.target.value;
+    console.log(event.target.value);
   });
   
   numberInput.addEventListener('keydown', (event) => {
