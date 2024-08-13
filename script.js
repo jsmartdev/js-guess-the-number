@@ -146,35 +146,17 @@ handleModeButton = (chanceNum) => {
       minValue.textContent = guess;
       guessValue.textContent = '';
       typedNumerals = '';
-      chances -= 1;
-      if(chances < 10) {
-        turnsValue.textContent = `00${chances}`;
-      } else {
-        turnsValue.textContent = `0${chances}`;
-      }
+      chances -= 1; 
     } else if (guess > secret) {
       maxValue.textContent = guess;
       guessValue.textContent = '';
       typedNumerals = '';
       chances -= 1;
-      if(chances < 10) {
-        turnsValue.textContent = `00${chances}`;
-      } else {
-        turnsValue.textContent = `0${chances}`;
-      }
     } else {
       minValue.textContent = guess;
       maxValue.textContent = guess;
     }  
   })
-
-
-  if(chances < 10) {
-    turnsValue.textContent = `00${chances}`;
-  } else {
-    turnsValue.textContent = `0${chances}`;
-  }
-
 
 }
 
