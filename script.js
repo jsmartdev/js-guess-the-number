@@ -118,9 +118,9 @@ const handleStartButton = () => {
 }
 
 handleModeButton = (chanceNum) => {
-  chances += chanceNum;
   clearChildren(gameField);
   renderGameScreen();
+  chances += chanceNum;
   
   const turnsValue = document.getElementById('turns-value');
   const minValue = document.getElementById('min-value');
@@ -129,6 +129,12 @@ handleModeButton = (chanceNum) => {
   const enter = document.getElementById('enter-button');
   const guessValue = document.getElementById('guess-value');
   let typedNumerals = ""; 
+
+  if(chances < 10) {
+    turnsValue.textContent = `00${chances}`;
+  } else {
+    turnsValue.textContent = `0${chances}`;
+  }
 
   numbers.forEach((number) => {
     number.addEventListener('click', (event) => {
@@ -146,12 +152,23 @@ handleModeButton = (chanceNum) => {
       minValue.textContent = guess;
       guessValue.textContent = '';
       typedNumerals = '';
-      chances -= 1; 
+      chances -= 1;
+      if(chances < 10) {
+        turnsValue.textContent = `00${chances}`;
+      } else {
+        turnsValue.textContent = `0${chances}`;
+      }
+      
     } else if (guess > secret) {
       maxValue.textContent = guess;
       guessValue.textContent = '';
       typedNumerals = '';
       chances -= 1;
+      if(chances < 10) {
+        turnsValue.textContent = `00${chances}`;
+      } else {
+        turnsValue.textContent = `0${chances}`;
+      }
     } else {
       minValue.textContent = guess;
       maxValue.textContent = guess;
