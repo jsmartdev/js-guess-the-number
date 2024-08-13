@@ -80,14 +80,13 @@ const gameScreen = () => {
   const eight = makeElement('button', '', '8', ['number']);
   const nine = makeElement('button', '', '9', ['number']);
   const zero = makeElement('button', '', '0', ['number']);
-  const backSpace = makeElement('button', 'back-space', 'BS');
-  const enter = makeElement('button', 'enter', 'E');
+  const enter = makeElement('button', '', 'enter', ['enter']);
   messageField.appendChild(message);
   guessCard.append(guessLabel, guessValue);
   turnsCard.append(turnsLabel, turnsValue);
   minCard.append(minLabel, minValue);
   maxCard.append(maxLabel, maxValue);
-  buttonGrid.append(one, two, three, four, five, six, seven, eight, nine, zero, backSpace, enter);
+  buttonGrid.append(one, two, three, four, five, six, seven, eight, nine, zero, enter);
   
   return [messageField, guessCard, turnsCard, minCard, maxCard, buttonGrid];
 }

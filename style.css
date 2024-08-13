@@ -178,3 +178,10 @@ button {
   border-radius: 0.25rem;
   font-size: 2rem;
 }
+
+.enter {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
