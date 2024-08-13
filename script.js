@@ -1,8 +1,8 @@
 const gameField = document.getElementById('game-field');
-const secret = Math.trunc(Math.random()*500)+1;
+const secret = Math.trunc(Math.random()*999)+1;
 let chances = 0;
 let min = 1;
-let max = 500;
+let max = 999;
 
 const makeElement = (tagName, id = '', text = '', classNames = []) => {
   const element = document.createElement(tagName);
@@ -69,7 +69,7 @@ const gameScreen = () => {
   const minLabel = makeElement('h2', 'min-label', 'Min');
   const minValue = makeElement('h3', 'min-value', '001');
   const maxLabel = makeElement('h2', 'max-label', 'Max');
-  const maxValue = makeElement('h3', 'max-value', '500');
+  const maxValue = makeElement('h3', 'max-value', '999');
   const one = makeElement('button', '', '1', ['number']);
   const two = makeElement('button', '', '2', ['number']);
   const three = makeElement('button', '', '3', ['number']);
@@ -80,7 +80,7 @@ const gameScreen = () => {
   const eight = makeElement('button', '', '8', ['number']);
   const nine = makeElement('button', '', '9', ['number']);
   const zero = makeElement('button', '', '0', ['number']);
-  const enter = makeElement('button', '', 'enter', ['enter']);
+  const enter = makeElement('button', 'enter-button', 'enter', ['enter']);
   messageField.appendChild(message);
   guessCard.append(guessLabel, guessValue);
   turnsCard.append(turnsLabel, turnsValue);
@@ -123,19 +123,51 @@ handleModeButton = (chanceNum) => {
   renderGameScreen();
   
   const turnsValue = document.getElementById('turns-value');
+  const minValue = document.getElementById('min-value');
+  const maxValue = document.getElementById('max-value');
   const numbers = document.querySelectorAll('.number');
+  const enter = document.getElementById('enter-button');
   const guessValue = document.getElementById('guess-value');
   let typedNumerals = ""; 
 
   numbers.forEach((number) => {
     number.addEventListener('click', (event) => {
-    typedNumerals += event.target.textContent;
-    if(typedNumerals.length > 3) {
-      typedNumerals = typedNumerals.slice(-3);
-    }
-    guessValue.textContent = typedNumerals;
+      typedNumerals += event.target.textContent;
+      if(typedNumerals.length > 3) {
+        typedNumerals = typedNumerals.slice(-3);
+      }
+      guessValue.textContent = typedNumerals;
+    })
   })
-})
+    
+  enter.addEventListener('click', () => {
+    const guess = parseFloat(guessValue.textContent);
+    if (guess < secret) {
+      minValue.textContent = guess;
+      guessValue.textContent = '';
+      typedNumerals = '';
+      chances -= 1;
+      if(chances < 10) {
+        turnsValue.textContent = `00${chances}`;
+      } else {
+        turnsValue.textContent = `0${chances}`;
+      }
+    } else if (guess > secret) {
+      maxValue.textContent = guess;
+      guessValue.textContent = '';
+      typedNumerals = '';
+      chances -= 1;
+      if(chances < 10) {
+        turnsValue.textContent = `00${chances}`;
+      } else {
+        turnsValue.textContent = `0${chances}`;
+      }
+    } else {
+      minValue.textContent = guess;
+      maxValue.textContent = guess;
+    }  
+  })
+
 
   if(chances < 10) {
     turnsValue.textContent = `00${chances}`;
