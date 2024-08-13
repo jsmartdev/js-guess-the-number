@@ -1,4 +1,5 @@
 const gameField = document.getElementById('game-field');
+const secret = Math.trunc(Math.random()*500)+1;
 let chances = 0;
 let min = 1;
 let max = 500;
@@ -30,6 +31,10 @@ const modifyClasses = (element, classesToAdd = [], classesToRemove = []) => {
   }
 };
 
+const displayNumber = (field, value) => {
+  field.textContent = value;
+}
+
 const clearChildren = (parent) => {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild);
@@ -51,10 +56,11 @@ const startScreen = () => {
 
 const gameScreen = () => {
   const messageField = makeElement('section', 'message-field');
-  const guessField = makeElement('section', 'guess-card', '', ['card']);
-  const turnsField = makeElement('section', 'turns-card', '', ['card']);
-  const minField = makeElement('section', 'min-card', '', ['card']);
-  const maxField = makeElement('section', 'max-card', '', ['card']);
+  const guessCard = makeElement('section', 'guess-card', '', ['card']);
+  const turnsCard = makeElement('section', 'turns-card', '', ['card']);
+  const minCard = makeElement('section', 'min-card', '', ['card']);
+  const maxCard = makeElement('section', 'max-card', '', ['card']);
+  const buttonGrid = makeElement('section', 'button-grid')
   const message = makeElement('h4', 'message', 'Type in a number between min and max, then press enter');
   const guessLabel = makeElement('h2', 'guess-label', 'Guess');
   const guessValue = makeElement('h3', 'guess-value');
@@ -64,20 +70,26 @@ const gameScreen = () => {
   const minValue = makeElement('h3', 'min-value', '001');
   const maxLabel = makeElement('h2', 'max-label', 'Max');
   const maxValue = makeElement('h3', 'max-value', '500');
-  const numberInput = makeElement('input', 'hidden-input');
-  numberInput.type = 'number';
-  
+  const one = makeElement('button', '', '1', ['number']);
+  const two = makeElement('button', '', '2', ['number']);
+  const three = makeElement('button', '', '3', ['number']);
+  const four = makeElement('button', '', '4', ['number']);
+  const five = makeElement('button', '', '5', ['number']);
+  const six = makeElement('button', '', '6', ['number']);
+  const seven = makeElement('button', '', '7', ['number']);
+  const eight = makeElement('button', '', '8', ['number']);
+  const nine = makeElement('button', '', '9', ['number']);
+  const zero = makeElement('button', '', '0', ['number']);
+  const backSpace = makeElement('button', 'back-space', 'BS');
+  const enter = makeElement('button', 'enter', 'E');
   messageField.appendChild(message);
-  guessField.appendChild(guessLabel);
-  guessField.appendChild(guessValue);
-  turnsField.appendChild(turnsLabel);
-  turnsField.appendChild(turnsValue);
-  minField.appendChild(minLabel);
-  minField.appendChild(minValue);
-  maxField.appendChild(maxLabel);
-  maxField.appendChild(maxValue);
+  guessCard.append(guessLabel, guessValue);
+  turnsCard.append(turnsLabel, turnsValue);
+  minCard.append(minLabel, minValue);
+  maxCard.append(maxLabel, maxValue);
+  buttonGrid.append(one, two, three, four, five, six, seven, eight, nine, zero, backSpace, enter);
   
-  return [messageField, guessField, turnsField, minField, maxField, numberInput];
+  return [messageField, guessCard, turnsCard, minCard, maxCard, buttonGrid];
 }
 
 
@@ -112,8 +124,19 @@ handleModeButton = (chanceNum) => {
   renderGameScreen();
   
   const turnsValue = document.getElementById('turns-value');
-  const numberInput = document.getElementById('hidden-input');
+  const numbers = document.querySelectorAll('.number');
   const guessValue = document.getElementById('guess-value');
+  let typedNumerals = ""; 
+
+  numbers.forEach((number) => {
+    number.addEventListener('click', (event) => {
+    typedNumerals += event.target.textContent;
+    if(typedNumerals.length > 3) {
+      typedNumerals = typedNumerals.slice(-3);
+    }
+    guessValue.textContent = typedNumerals;
+  })
+})
 
   if(chances < 10) {
     turnsValue.textContent = `00${chances}`;
@@ -121,21 +144,7 @@ handleModeButton = (chanceNum) => {
     turnsValue.textContent = `0${chances}`;
   }
 
-  numberInput.addEventListener('input', (event) => {
-    guessValue.textContent += event.target.value;
-    console.log(event.target.value);
-  });
-  
-  numberInput.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') 
-      guessValue.textContent = '';
-      numberInput.value = '';
-    })
-  numberInput.focus();
 
-  numberInput.addEventListener('focusout', () => {
-    numberInput.focus(); 
-  });
 }
 
 renderStartScreen();
