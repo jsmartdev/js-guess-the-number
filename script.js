@@ -46,10 +46,8 @@ const startScreen = () => {
   const gameTitle = makeElement('h1', '', 'Guess The Secret Number');
   const startButton = makeElement('button', 'start-game', 'Start Game', ['button'])
   startButton.addEventListener('click', handleStartButton);
-  
   buttonContainer.appendChild(startButton);
   titleContainer.appendChild(gameTitle);
-  
   return [titleContainer, buttonContainer];
 }
 
@@ -86,7 +84,6 @@ const gameScreen = () => {
   minCard.append(minLabel, minValue);
   maxCard.append(maxLabel, maxValue);
   buttonGrid.append(one, two, three, four, five, six, seven, eight, nine, zero, enter);
-  
   return [messageField, guessCard, turnsCard, minCard, maxCard, buttonGrid];
 }
 
@@ -97,12 +94,25 @@ const winScreen = (guess) => {
   const winMessage = makeElement('h2', '', `${guess} is the secret number!`);
   titleContainer.append(winHeader);
   messageContainer.append(winMessage);
+  return [titleContainer, messageContainer];
+}
 
+const gameOverScreen = () => {
+  const titleContainer = makeElement('header', 'title-container');
+  const messageContainer = makeElement('section', 'message-container');
+  const lossheader = makeElement('h1', '', 'Game Over!');
+  const lossMessage = makeElement('h2', '', 'You are out of chances...');
+  titleContainer.append(lossheader);
+  messageContainer.append(lossMessage);
   return [titleContainer, messageContainer];
 }
 
 const renderWinScreen = (guess) => {
   winScreen(guess).forEach(el => gameField.appendChild(el));
+}
+
+const renderGameOver = () => {
+  gameOverScreen().forEach(el => gameField.appendChild(el));
 }
 
 const renderStartScreen = () => {
@@ -116,15 +126,12 @@ const renderGameScreen = () => {
 const handleStartButton = () => {
   const buttonContainer = document.getElementById('button-container');
   clearChildren(buttonContainer);
-
   const easyButton = makeElement('button', 'easy-mode', 'Easy', ['button'] );
   const normalButton = makeElement('button', 'normal-mode', 'Normal', ['button'] );
   const hardButton = makeElement('button', 'hard-mode', 'Hard', ['button'] );
-  
   easyButton.addEventListener('click', () => handleModeButton(16));
   normalButton.addEventListener('click', () => handleModeButton(12));
   hardButton.addEventListener('click', () => handleModeButton(8));
-  
   buttonContainer.appendChild(easyButton);
   buttonContainer.appendChild(normalButton);
   buttonContainer.appendChild(hardButton);
@@ -134,7 +141,6 @@ handleModeButton = (chanceNum) => {
   clearChildren(gameField);
   renderGameScreen();
   chances += chanceNum;
-  
   const turnsValue = document.getElementById('turns-value');
   const minValue = document.getElementById('min-value');
   const maxValue = document.getElementById('max-value');
@@ -142,13 +148,11 @@ handleModeButton = (chanceNum) => {
   const enter = document.getElementById('enter-button');
   const guessValue = document.getElementById('guess-value');
   let typedNumerals = ""; 
-
   if(chances < 10) {
     turnsValue.textContent = `00${chances}`;
   } else {
     turnsValue.textContent = `0${chances}`;
   }
-
   numbers.forEach((number) => {
     number.addEventListener('click', (event) => {
       typedNumerals += event.target.textContent;
@@ -158,14 +162,11 @@ handleModeButton = (chanceNum) => {
       guessValue.textContent = typedNumerals;
     })
   })
-    
   enter.addEventListener('click', () => {
-    
     const guess = parseFloat(guessValue.textContent);
     const input = guessValue.textContent;
     const minimum = parseFloat(minValue.textContent);
     const maximum = parseFloat(maxValue.textContent);
-    
     if (!isWithinMinMax(guess, minimum, maximum)) {
       renderErrorMessage();
       typedNumerals = '';
@@ -192,6 +193,7 @@ handleModeButton = (chanceNum) => {
     typedNumerals = '';
     guessValue.textContent = '';
     if (chances < 1) {
+      clearChildren(gameField);
       renderGameOver();
       return;
     }
