@@ -1,6 +1,4 @@
 const gameField = document.getElementById('game-field');
-const secret = Math.trunc(Math.random()*999)+1;
-let chances = 0;
 
 const makeElement = (tagName, id = '', text = '', classNames = []) => {
   const element = document.createElement(tagName);
@@ -90,21 +88,29 @@ const gameScreen = () => {
 const winScreen = (guess) => {
   const titleContainer = makeElement('header', 'title-container');
   const messageContainer  = makeElement('section', 'message-container');
+  const returnContainer  = makeElement('section', 'return-container');
   const winHeader = makeElement('h1', '', 'You Win!');
   const winMessage = makeElement('h2', '', `${guess} is the secret number!`);
+  const returnButton = makeElement('button', 'return', 'Return', ['button']);
+  returnButton.addEventListener('click', returnStart);
   titleContainer.append(winHeader);
   messageContainer.append(winMessage);
-  return [titleContainer, messageContainer];
+  returnContainer.append(returnButton);
+  return [titleContainer, messageContainer, returnContainer];
 }
 
 const gameOverScreen = () => {
   const titleContainer = makeElement('header', 'title-container');
   const messageContainer = makeElement('section', 'message-container');
+  const returnContainer  = makeElement('section', 'return-container');
   const lossheader = makeElement('h1', '', 'Game Over!');
   const lossMessage = makeElement('h2', '', 'You are out of chances...');
+  const returnButton = makeElement('button', 'return', 'Return', ['button']);
+  returnButton.addEventListener('click', returnStart);
   titleContainer.append(lossheader);
   messageContainer.append(lossMessage);
-  return [titleContainer, messageContainer];
+  returnContainer.append(returnButton);
+  return [titleContainer, messageContainer, returnContainer];
 }
 
 const renderWinScreen = (guess) => {
@@ -121,6 +127,12 @@ const renderStartScreen = () => {
 
 const renderGameScreen = () => {
   gameScreen().forEach(el => gameField.appendChild(el));
+}
+
+const returnStart = () => {
+  clearChildren(gameField);
+  renderStartScreen();
+  
 }
 
 const handleStartButton = () => {
@@ -140,7 +152,9 @@ const handleStartButton = () => {
 handleModeButton = (chanceNum) => {
   clearChildren(gameField);
   renderGameScreen();
+  let chances = 0;
   chances += chanceNum;
+  const secret = Math.trunc(Math.random()*999)+1;
   const turnsValue = document.getElementById('turns-value');
   const minValue = document.getElementById('min-value');
   const maxValue = document.getElementById('max-value');
