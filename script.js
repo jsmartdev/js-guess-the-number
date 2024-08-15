@@ -1,8 +1,6 @@
 const gameField = document.getElementById('game-field');
 const secret = Math.trunc(Math.random()*999)+1;
 let chances = 0;
-let min = 1;
-let max = 999;
 
 const makeElement = (tagName, id = '', text = '', classNames = []) => {
   const element = document.createElement(tagName);
@@ -31,9 +29,10 @@ const modifyClasses = (element, classesToAdd = [], classesToRemove = []) => {
   }
 };
 
-const displayNumber = (field, value) => {
-  field.textContent = value;
+const isWithinMinMax = (input, min, max) => {
+  return input >= min && input <= max;
 }
+
 
 const clearChildren = (parent) => {
   while (parent.firstChild) {
@@ -147,35 +146,42 @@ handleModeButton = (chanceNum) => {
   })
     
   enter.addEventListener('click', () => {
+    
     const guess = parseFloat(guessValue.textContent);
+    const minimum = parseFloat(minValue.textContent);
+    const maximum = parseFloat(maxValue.textContent);
+    
+    if (!isWithinMinMax(guess, minimum, maximum)) {
+      renderErrorMessage();
+      typedNumerals = '';
+      guessValue.textContent = '';
+      return;
+    } 
+    if (guess === secret) {
+      renderWinScreen();
+      return;
+    }
     if (guess < secret) {
       minValue.textContent = guess;
-      guessValue.textContent = '';
-      typedNumerals = '';
-      chances -= 1;
-      if(chances < 10) {
-        turnsValue.textContent = `00${chances}`;
-      } else {
-        turnsValue.textContent = `0${chances}`;
-      }
-      
-    } else if (guess > secret) {
-      maxValue.textContent = guess;
-      guessValue.textContent = '';
-      typedNumerals = '';
-      chances -= 1;
-      if(chances < 10) {
-        turnsValue.textContent = `00${chances}`;
-      } else {
-        turnsValue.textContent = `0${chances}`;
-      }
     } else {
-      minValue.textContent = guess;
       maxValue.textContent = guess;
-    }  
+    }
+    chances -= 1;
+    console.log(chances);
+    turnsValue.textContent = '';
+    if (chances < 10) {
+      turnsValue.textContent = `00${chances}`;
+    } else {
+      turnsValue.textContent = `0${chances}`;
+    }
+    typedNumerals = '';
+    guessValue.textContent = '';
+    if (chances < 1) {
+      renderGameOver();
+      return;
+    }
   })
-
-}
+};
 
 renderStartScreen();
 
