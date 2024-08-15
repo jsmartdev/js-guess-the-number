@@ -90,6 +90,20 @@ const gameScreen = () => {
   return [messageField, guessCard, turnsCard, minCard, maxCard, buttonGrid];
 }
 
+const winScreen = (guess) => {
+  const titleContainer = makeElement('header', 'title-container');
+  const messageContainer  = makeElement('section', 'message-container');
+  const winHeader = makeElement('h1', '', 'You Win!');
+  const winMessage = makeElement('h2', '', `${guess} is the secret number!`);
+  titleContainer.append(winHeader);
+  messageContainer.append(winMessage);
+
+  return [titleContainer, messageContainer];
+}
+
+const renderWinScreen = (guess) => {
+  winScreen(guess).forEach(el => gameField.appendChild(el));
+}
 
 const renderStartScreen = () => {
   startScreen().forEach(el => gameField.appendChild(el));
@@ -148,6 +162,7 @@ handleModeButton = (chanceNum) => {
   enter.addEventListener('click', () => {
     
     const guess = parseFloat(guessValue.textContent);
+    const input = guessValue.textContent;
     const minimum = parseFloat(minValue.textContent);
     const maximum = parseFloat(maxValue.textContent);
     
@@ -158,7 +173,8 @@ handleModeButton = (chanceNum) => {
       return;
     } 
     if (guess === secret) {
-      renderWinScreen();
+      clearChildren(gameField);
+      renderWinScreen(input);
       return;
     }
     if (guess < secret) {
@@ -167,7 +183,6 @@ handleModeButton = (chanceNum) => {
       maxValue.textContent = guess;
     }
     chances -= 1;
-    console.log(chances);
     turnsValue.textContent = '';
     if (chances < 10) {
       turnsValue.textContent = `00${chances}`;
@@ -184,8 +199,6 @@ handleModeButton = (chanceNum) => {
 };
 
 renderStartScreen();
-
-
 
 
 
