@@ -14,23 +14,9 @@ const makeElement = (tagName, id = '', text = '', classNames = []) => {
   return element;
 };
 
-const modifyClasses = (element, classesToAdd = [], classesToRemove = []) => {
-  if (element instanceof Element) {
-    if (classesToRemove.length > 0) {
-      element.classList.remove(...classesToRemove);
-    }
-    if (classesToAdd.length > 0) {
-      element.classList.add(...classesToAdd);
-    }
-  } else {
-    console.error('Provided argument is not a valid DOM element.');
-  }
-};
-
 const isWithinMinMax = (input, min, max) => {
   return input >= min && input <= max;
 }
-
 
 const clearChildren = (parent) => {
   while (parent.firstChild) {
@@ -132,7 +118,6 @@ const renderGameScreen = () => {
 const returnStart = () => {
   clearChildren(gameField);
   renderStartScreen();
-  
 }
 
 const handleStartButton = () => {
@@ -179,10 +164,11 @@ handleModeButton = (chanceNum) => {
   enter.addEventListener('click', () => {
     const guess = parseFloat(guessValue.textContent);
     const input = guessValue.textContent;
+    const message = document.getElementById('message');
     const minimum = parseFloat(minValue.textContent);
     const maximum = parseFloat(maxValue.textContent);
     if (!isWithinMinMax(guess, minimum, maximum)) {
-      renderErrorMessage();
+      message.textContent = 'Invalid Number'
       typedNumerals = '';
       guessValue.textContent = '';
       return;
@@ -194,10 +180,12 @@ handleModeButton = (chanceNum) => {
     }
     if (guess < secret) {
       minValue.textContent = guess;
+      message.textContent = 'Higher'
     } else {
+      message.textContent = 'Lower'
       maxValue.textContent = guess;
     }
-    chances -= 1;
+    chances--;
     turnsValue.textContent = '';
     if (chances < 10) {
       turnsValue.textContent = `00${chances}`;
