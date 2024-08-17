@@ -24,6 +24,16 @@ const clearChildren = (parent) => {
   }
 };
 
+const displayNumber = (element, value) => {
+  if (value < 10) {
+    element.textContent = `00${value}`;
+  } else if (value < 100) {
+    element.textContent = `0${value}`;
+  } else {
+    element.textContent = `${value}`;
+  }
+}
+
 const startScreen = () => {
   const titleContainer = makeElement('header', 'title-container');
   const buttonContainer  = makeElement('section', 'button-container');
@@ -78,7 +88,7 @@ const winScreen = (guess) => {
   const winHeader = makeElement('h1', '', 'You Win!');
   const winMessage = makeElement('h2', '', `${guess} is the secret number!`);
   const returnButton = makeElement('button', 'return', 'Return', ['button']);
-  returnButton.addEventListener('click', returnStart);
+  returnButton.addEventListener('click', () => renderScreen(startScreen));
   titleContainer.append(winHeader);
   messageContainer.append(winMessage);
   returnContainer.append(returnButton);
@@ -92,32 +102,21 @@ const gameOverScreen = () => {
   const lossheader = makeElement('h1', '', 'Game Over!');
   const lossMessage = makeElement('h2', '', 'You are out of chances...');
   const returnButton = makeElement('button', 'return', 'Return', ['button']);
-  returnButton.addEventListener('click', returnStart);
+  returnButton.addEventListener('click', () => renderScreen(startScreen));
   titleContainer.append(lossheader);
   messageContainer.append(lossMessage);
   returnContainer.append(returnButton);
   return [titleContainer, messageContainer, returnContainer];
 }
 
-const renderWinScreen = (guess) => {
-  winScreen(guess).forEach(el => gameField.appendChild(el));
-}
-
-const renderGameOver = () => {
-  gameOverScreen().forEach(el => gameField.appendChild(el));
-}
-
-const renderStartScreen = () => {
-  startScreen().forEach(el => gameField.appendChild(el));
-}
-
-const renderGameScreen = () => {
-  gameScreen().forEach(el => gameField.appendChild(el));
-}
-
-const returnStart = () => {
+const renderScreen = (template) => {
   clearChildren(gameField);
-  renderStartScreen();
+  template().forEach(el => gameField.appendChild(el));
+}
+
+const renderWinScreen = (secret) => {
+  clearChildren(gameField);
+  winScreen(secret).forEach(el => gameField.appendChild(el));
 }
 
 const handleStartButton = () => {
@@ -126,17 +125,14 @@ const handleStartButton = () => {
   const easyButton = makeElement('button', 'easy-mode', 'Easy', ['button'] );
   const normalButton = makeElement('button', 'normal-mode', 'Normal', ['button'] );
   const hardButton = makeElement('button', 'hard-mode', 'Hard', ['button'] );
-  easyButton.addEventListener('click', () => handleModeButton(16));
-  normalButton.addEventListener('click', () => handleModeButton(12));
-  hardButton.addEventListener('click', () => handleModeButton(8));
-  buttonContainer.appendChild(easyButton);
-  buttonContainer.appendChild(normalButton);
-  buttonContainer.appendChild(hardButton);
+  easyButton.addEventListener('click', () => handleModeButton(14));
+  normalButton.addEventListener('click', () => handleModeButton(10));
+  hardButton.addEventListener('click', () => handleModeButton(6));
+  buttonContainer.append(easyButton, normalButton, hardButton);
 }
 
 handleModeButton = (chanceNum) => {
-  clearChildren(gameField);
-  renderGameScreen();
+  renderScreen(gameScreen);
   let chances = 0;
   chances += chanceNum;
   const secret = Math.trunc(Math.random()*999)+1;
@@ -147,11 +143,7 @@ handleModeButton = (chanceNum) => {
   const enter = document.getElementById('enter-button');
   const guessValue = document.getElementById('guess-value');
   let typedNumerals = ""; 
-  if(chances < 10) {
-    turnsValue.textContent = `00${chances}`;
-  } else {
-    turnsValue.textContent = `0${chances}`;
-  }
+  displayNumber(turnsValue, chances);
   numbers.forEach((number) => {
     number.addEventListener('click', (event) => {
       typedNumerals += event.target.textContent;
@@ -163,50 +155,35 @@ handleModeButton = (chanceNum) => {
   })
   enter.addEventListener('click', () => {
     const guess = parseFloat(guessValue.textContent);
-    const input = guessValue.textContent;
-    const message = document.getElementById('message');
     const minimum = parseFloat(minValue.textContent);
     const maximum = parseFloat(maxValue.textContent);
+    const message = document.getElementById('message');
     if (!isWithinMinMax(guess, minimum, maximum)) {
-      message.textContent = 'Invalid Number'
+      message.textContent = 'Invalid Number';
       typedNumerals = '';
       guessValue.textContent = '';
       return;
     } 
     if (guess === secret) {
-      clearChildren(gameField);
-      renderWinScreen(input);
+      renderWinScreen(secret);
       return;
     }
     if (guess < secret) {
-      minValue.textContent = guess;
-      message.textContent = 'Higher'
+      displayNumber(minValue, guess);
+      message.textContent = 'Higher';
     } else {
-      message.textContent = 'Lower'
-      maxValue.textContent = guess;
+      displayNumber(maxValue, guess);
+      message.textContent = 'Lower';
     }
     chances--;
-    turnsValue.textContent = '';
-    if (chances < 10) {
-      turnsValue.textContent = `00${chances}`;
-    } else {
-      turnsValue.textContent = `0${chances}`;
-    }
+    displayNumber(turnsValue, chances);
     typedNumerals = '';
     guessValue.textContent = '';
     if (chances < 1) {
-      clearChildren(gameField);
-      renderGameOver();
+      renderScreen(gameOverScreen);
       return;
     }
   })
 };
 
-renderStartScreen();
-
-
-
-
-
-
-
+renderScreen(startScreen);
