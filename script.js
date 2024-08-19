@@ -1,4 +1,4 @@
-const gameField = document.getElementById('game-field');
+const gameScreen = document.getElementById('game-screen');
 
 const makeElement = (tagName, id = '', text = '', classNames = []) => {
   const element = document.createElement(tagName);
@@ -14,16 +14,6 @@ const makeElement = (tagName, id = '', text = '', classNames = []) => {
   return element;
 };
 
-const isWithinMinMax = (input, min, max) => {
-  return input >= min && input <= max;
-}
-
-const clearChildren = (parent) => {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-};
-
 const displayNumber = (element, value) => {
   if (value < 10) {
     element.textContent = `00${value}`;
@@ -34,25 +24,40 @@ const displayNumber = (element, value) => {
   }
 }
 
-const startScreen = () => {
-  const titleContainer = makeElement('header', 'title-container');
-  const buttonContainer  = makeElement('section', 'button-container');
-  const gameTitle = makeElement('h1', '', 'Guess The Secret Number');
-  const startButton = makeElement('button', 'start-game', 'Start Game', ['button'])
-  startButton.addEventListener('click', handleStartButton);
-  buttonContainer.appendChild(startButton);
-  titleContainer.appendChild(gameTitle);
-  return [titleContainer, buttonContainer];
+const isWithinMinMax = (input, min, max) => {
+  return input >= min && input <= max;
 }
 
-const gameScreen = () => {
-  const messageField = makeElement('section', 'message-field');
+const clearChildren = (parent) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  }
+};
+
+const renderScreen = (template) => {
+  clearChildren(gameScreen);
+  template().forEach(el => gameScreen.appendChild(el));
+}
+
+const startTemplate = () => {
+  const titleContainer = makeElement('header', 'header-container');
+  const pageContainer  = makeElement('section', 'page-container');
+  const titleContent = makeElement('h1', '', 'Guess The Secret Number');
+  const startButton = makeElement('button', 'start-game', 'Start');
+  startButton.addEventListener('click', handleStartButton);
+  titleContainer.appendChild(titleContent);
+  pageContainer.appendChild(startButton);
+  return [titleContainer, pageContainer];
+}
+
+const gameTemplate = () => {
+  const messageContainer = makeElement('section', 'message-container');
   const guessCard = makeElement('section', 'guess-card', '', ['card']);
   const turnsCard = makeElement('section', 'turns-card', '', ['card']);
   const minCard = makeElement('section', 'min-card', '', ['card']);
   const maxCard = makeElement('section', 'max-card', '', ['card']);
-  const buttonGrid = makeElement('section', 'button-grid')
-  const message = makeElement('h4', 'message', 'Type in a number between min and max, then press enter');
+  const buttonGrid = makeElement('section', 'button-grid');
+  const messageContent = makeElement('h4', 'message', 'Type in a number between min and max');
   const guessLabel = makeElement('h2', 'guess-label', 'Guess');
   const guessValue = makeElement('h3', 'guess-value');
   const turnsLabel = makeElement('h2', 'turns-label', 'Turns');
@@ -72,67 +77,53 @@ const gameScreen = () => {
   const nine = makeElement('button', '', '9', ['number']);
   const zero = makeElement('button', '', '0', ['number']);
   const enter = makeElement('button', 'enter-button', 'enter', ['enter']);
-  messageField.appendChild(message);
+  messageContainer.appendChild(messageContent);
   guessCard.append(guessLabel, guessValue);
   turnsCard.append(turnsLabel, turnsValue);
   minCard.append(minLabel, minValue);
   maxCard.append(maxLabel, maxValue);
   buttonGrid.append(one, two, three, four, five, six, seven, eight, nine, zero, enter);
-  return [messageField, guessCard, turnsCard, minCard, maxCard, buttonGrid];
+  return [messageContainer, guessCard, turnsCard, minCard, maxCard, buttonGrid];
 }
 
-const winScreen = (guess) => {
-  const titleContainer = makeElement('header', 'title-container');
-  const messageContainer  = makeElement('section', 'message-container');
-  const returnContainer  = makeElement('section', 'return-container');
-  const winHeader = makeElement('h1', '', 'You Win!');
-  const winMessage = makeElement('h2', '', `${guess} is the secret number!`);
-  const returnButton = makeElement('button', 'return', 'Return', ['button']);
-  returnButton.addEventListener('click', () => renderScreen(startScreen));
-  titleContainer.append(winHeader);
-  messageContainer.append(winMessage);
-  returnContainer.append(returnButton);
-  return [titleContainer, messageContainer, returnContainer];
+const winTemplate = (secret, chances) => {
+  const headerContainer = makeElement('header', 'header-container');
+  const pageContainer = makeElement('section', 'page-container');
+  const headerContent= makeElement('h1', '', `You Win!`);
+  const messageContent = makeElement('h2', 'message-content', `${secret} is the secret number! Your score is ${chances}`);
+  const returnButton = makeElement('button', 'return', 'Return');
+  returnButton.addEventListener('click', () => renderScreen(startTemplate));
+  headerContainer.append(headerContent);
+  pageContainer.append(messageContent, returnButton);
+  return [headerContainer, pageContainer];
 }
 
-const gameOverScreen = () => {
-  const titleContainer = makeElement('header', 'title-container');
-  const messageContainer = makeElement('section', 'message-container');
-  const returnContainer  = makeElement('section', 'return-container');
-  const lossheader = makeElement('h1', '', 'Game Over!');
-  const lossMessage = makeElement('h2', '', 'You are out of chances...');
-  const returnButton = makeElement('button', 'return', 'Return', ['button']);
-  returnButton.addEventListener('click', () => renderScreen(startScreen));
-  titleContainer.append(lossheader);
-  messageContainer.append(lossMessage);
-  returnContainer.append(returnButton);
-  return [titleContainer, messageContainer, returnContainer];
-}
-
-const renderScreen = (template) => {
-  clearChildren(gameField);
-  template().forEach(el => gameField.appendChild(el));
-}
-
-const renderWinScreen = (secret) => {
-  clearChildren(gameField);
-  winScreen(secret).forEach(el => gameField.appendChild(el));
+const lossTemplate = () => {
+  const headerContainer = makeElement('header', 'header-container');
+  const pageContainer = makeElement('section', 'page-container');
+  const headerContent= makeElement('h1', '', `Game Over!`);
+  const messageContent = makeElement('h2', 'message-content', `You are out of chances.`);
+  const returnButton = makeElement('button', 'return', 'Return');
+  returnButton.addEventListener('click', () => renderScreen(startTemplate));
+  headerContainer.append(headerContent);
+  pageContainer.append(messageContent, returnButton);
+  return [headerContainer, pageContainer];
 }
 
 const handleStartButton = () => {
-  const buttonContainer = document.getElementById('button-container');
-  clearChildren(buttonContainer);
-  const easyButton = makeElement('button', 'easy-mode', 'Easy', ['button'] );
-  const normalButton = makeElement('button', 'normal-mode', 'Normal', ['button'] );
-  const hardButton = makeElement('button', 'hard-mode', 'Hard', ['button'] );
+  const pageContainer = document.getElementById('page-container');
+  clearChildren(pageContainer);
+  const easyButton = makeElement('button', 'easy-mode', 'Easy');
+  const normalButton = makeElement('button', 'normal-mode', 'Normal');
+  const hardButton = makeElement('button', 'hard-mode', 'Hard');
   easyButton.addEventListener('click', () => handleModeButton(14));
   normalButton.addEventListener('click', () => handleModeButton(10));
   hardButton.addEventListener('click', () => handleModeButton(6));
-  buttonContainer.append(easyButton, normalButton, hardButton);
+  pageContainer.append(easyButton, normalButton, hardButton);
 }
 
 handleModeButton = (chanceNum) => {
-  renderScreen(gameScreen);
+  renderScreen(gameTemplate);
   let chances = 0;
   chances += chanceNum;
   const secret = Math.trunc(Math.random()*999)+1;
@@ -165,7 +156,8 @@ handleModeButton = (chanceNum) => {
       return;
     } 
     if (guess === secret) {
-      renderWinScreen(secret);
+      const chancesLeft = chances * 25;
+      renderScreen(() => winTemplate(secret, chancesLeft));
       return;
     }
     if (guess < secret) {
@@ -180,10 +172,10 @@ handleModeButton = (chanceNum) => {
     typedNumerals = '';
     guessValue.textContent = '';
     if (chances < 1) {
-      renderScreen(gameOverScreen);
+      renderScreen(lossTemplate);
       return;
     }
   })
 };
 
-renderScreen(startScreen);
+renderScreen(startTemplate);

@@ -23,19 +23,19 @@ body {
   margin: 0;
   font-size: 62.5%;
   font-family: monospace;
-  padding: 0.5rem;
 }
 
-#game-field {
+#game-screen {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(8, 1fr);
   gap: 0.5rem;
+  padding: 0.5rem;
   height: 100%;
   width: 100%;
 }
 
-#title-container {
+#header-container {
   grid-column-start: 1;
   grid-column-end: 5;
   grid-row-start: 1;
@@ -46,7 +46,7 @@ body {
 }
 
 h1 {
-  font-size: 1.75rem;
+  font-size: 3rem;
   text-align: center;
 }
 
@@ -64,47 +64,62 @@ h4 {
   font-size: 0.5rem;
 }
 
-#button-container {
+#page-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  align-items: center;
   grid-column-start: 1;
   grid-column-end: 5;
   grid-row-start: 3;
   grid-row-end: 9;
+}
+
+#start-game {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+#easy-mode {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+#normal-mode {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 3;
+  grid-row-end: 4;
+}
+
+#hard-mode {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 5;
+  grid-row-end: 6;
+}
+
+#message-content {
+  grid-column-start: 1;
+  grid-column-end: 7;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+#return {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 5;
+  grid-row-end: 6;
+}
+
+#message-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 80%;
-}
-
-#number-input {
-  display: none;
-}
-
-.button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 8rem;
-  height: 3rem;
-  font-size: 1rem;
-  padding: 0.25rem;
-  border: none;
-  color: #2C3E50;
-  background-color: #BDC3C7;
-  border-radius: 14px;
-  margin: 1.5rem;
-}
-
-#hidden-input {
-  opacity: 0;
-  position: absolute;
-  z-index: -1;
-}
-
-#message-field {
-  display: flex;
-  justify-content: flex-start;
   align-items: center;
   grid-column-start: 1; 
   grid-column-end: 5;
